@@ -134,31 +134,25 @@ namespace TestTask
             return stats;
         }
 
-        private static void IncStatistic(IList<LetterStats> stats, char letter)
-        {
-            // Ищем букву в статистике
-            var stat = stats.FirstOrDefault(s => s.Letter == letter);
+         private static void IncStatistic(IList<LetterStats> stats, char letter)
+ {
+     // Проверяем, существует ли буква в списке
+     int index = stats.ToList().FindIndex(s => s.Letter == letter.ToString());
 
-            /// <summary>
-            /// Метод увеличивает счётчик вхождений по переданной структуре.
-            /// </summary>
-            /// <param name="letterStats"></param>
+     if (index >= 0)
+     {
+         // Увеличиваем счётчик для найденной буквы
+         var stat = stats[index];
+         stat.Count++;
+         stats[index] = stat;
+     }
+     else
+     {
+         // Добавляем новую запись, если буква отсутствует
+         stats.Add(new LetterStats { Letter = letter.ToString(), Count = 1 });
+     }
+ }
 
-            if (stat != null)
-            {
-                stat.Count++; // Если нашли, увеличиваем счётчик
-            }
-            else
-            {
-                stats.Add(new LetterStats { Letter = letter, Count = 1 }); // Если нет, добавляем новую запись
-            }
-        }
-
-        class LetterStats
-        {
-            public char Letter { get; set; } // Символ
-            public int Count { get; set; }  // Количество вхождений
-        }
 
         /// <summary>
         /// Ф-ция перебирает все найденные буквы/парные буквы, содержащие в себе только гласные или согласные буквы.
